@@ -1,0 +1,247 @@
+/* ======================================================= */
+/* === Estilos para la página de Login (login.css) === */
+/* ======================================================= */
+
+/* 🌟 ESTADO INICIAL: Oculta el formulario de registro por defecto para evitar que se mezclen */
+#register-form {
+    display: none;
+}
+
+/* 1. Estilos de Contenedor y Centrado */
+body.login-page { 
+    font-family: 'Poppins', sans-serif; 
+    background-color: #f7f0f0;
+    
+    /* Centrado con Flexbox */
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    min-height: 100vh; 
+    margin: 0;
+    padding: 20px 0; /* Pequeño padding para móviles */
+}
+
+.login-container {
+    width: 100%;
+    max-width: 440px; /* Balanceado para los campos extendidos */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* 2. Estilos de la Caja del Formulario */
+.login-box {
+    background-color: #ffffff;
+    padding: 35px 40px; 
+    border-radius: 15px;
+    /* Sombra suave y moderna */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); 
+    text-align: center;
+    max-height: 90vh; /* Evita desbordamientos en pantallas portátiles o laptops */
+    overflow-y: auto; /* Activa el scroll interno si el formulario de registro es alto */
+}
+
+/* Estilización sutil del scrollbar interno de la caja */
+.login-box::-webkit-scrollbar {
+    width: 6px;
+}
+.login-box::-webkit-scrollbar-thumb {
+    background-color: #ffebf5;
+    border-radius: 10px;
+}
+
+.logo-login {
+    width: 120px; 
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.login-box h2 {
+    color: #ff4d94; /* Rosa destacado de Niñas Shop */
+    font-size: 1.8em;
+    margin-top: 0;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #ffebf5;
+    padding-bottom: 15px;
+    font-weight: 800;
+}
+
+/* 3. Estilos del Formulario, Entradas y Nuevas Filas */
+.login-form {
+    width: 100%;
+}
+
+/* 🌟 NUEVO: Soporte nativo para las cuadrículas internas de nombres y apellidos */
+.form-row {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 16px; /* Margen compacto optimizado para agrupar los campos */
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600; 
+    color: #555;
+    font-size: 0.95em;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 14px; 
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 1em;
+    font-family: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Captura de enfoque unificada (Aplica a login, campos relacionales de clientes y reg-user) */
+.input-group input:focus {
+    border-color: #ff69b4; 
+    box-shadow: 0 0 5px rgba(255, 105, 180, 0.5); 
+    outline: none;
+}
+
+/* Botón de Login (Clase auxiliar para el botón principal) */
+.btn-login {
+    width: 100%;
+    margin-top: 15px;
+    font-size: 1.15em; 
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: #ff4d94; 
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
+}
+
+.btn-login:hover {
+    background-color: #ff3381;
+    transform: translateY(-2px);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+}
+
+/* Estilo adaptado para el botón de registro integrado */
+.btn-register { 
+    background-color: #4CAF50 !important; 
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4) !important;
+}
+
+.btn-register:hover {
+    background-color: #43a047 !important;
+}
+
+/* 4. Separador y Botones Sociales */
+.separator {
+    margin: 25px 0 20px 0;
+    color: #aaa;
+    font-size: 0.95em;
+    position: relative;
+    text-align: center;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 38%;
+    height: 1px;
+    background: #e0e0e0;
+}
+.separator::before { left: 0; }
+.separator::after { right: 0; }
+
+.btn-social {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    background-color: #f8f8f8;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #333;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-social:hover {
+    background-color: #ffffff;
+    border-color: #ffc6e2;
+}
+
+/* 5. Enlaces al pie del formulario */
+.footer-links {
+    margin-top: 25px;
+    font-size: 0.95em;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-links a {
+    color: #ff69b4;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: #ff3381;
+}
+
+.footer-links p {
+    margin: 0;
+}
+
+.footer-links p a {
+    font-weight: 800;
+}
+
+/* 6. Enlace de Volver a la Tienda */
+.back-link {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.back-link a {
+    color: #ff69b4;
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s;
+}
+
+.back-link a:hover {
+    color: #ff3381;
+}
+
+/* 7. Ajustes Responsivos */
+@media (max-width: 500px) {
+    /* 🌟 NUEVO: Obliga a las filas horizontales a romperse en vertical para móviles */
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .login-box {
+        padding: 30px 20px;
+    }
+    
+    .separator::before,
+    .separator::after {
+        width: 30%;
+    }
+}

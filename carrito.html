@@ -1,0 +1,62 @@
+<!DOCTYPE html> 
+<html lang="es"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Carrito de Compras | Lipst_ick Shop</title> 
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="carrito.css"> 
+</head> 
+<body class="carrito-page"> 
+    <div class="checkout-container"> 
+        <div class="back-link"> 
+            <a href="index.html">← Continuar Comprando</a> 
+        </div> 
+        <div class="checkout-box"> 
+            <img class="logo-carrito" src="imagines/logo1-removebg-preview.png" alt="Logo de Lipst_ick Shop"> 
+            <h2>🛒 Tu Carrito de Compras</h2> 
+            <main class="carrito-main"> 
+                <section class="productos-list" id="productos-list"> 
+                    <h3>Detalle de Productos</h3> 
+                    <div id="carrito-vacio-msg" style="padding: 20px; text-align: center; color: #666; font-size: 1.1em;"> 
+                        Tu carrito está vacío. ¡Explora la tienda para añadir productos! 
+                    </div> 
+                </section> 
+                <section class="resumen-pago"> 
+                    <h3>Resumen y Pago</h3> 
+                    <div class="resumen-line"> 
+                        <span>Subtotal de productos:</span> 
+                        <span id="subtotal">C$0.00</span> 
+                    </div> 
+                    <div class="resumen-line"> 
+                        <span>Envío Estándar:</span> 
+                        <span id="shipping">C$0.00</span> 
+                    </div> 
+                    <hr> 
+                    <div class="resumen-line total-line"> 
+                        <strong>TOTAL A PAGAR:</strong> 
+                        <strong id="total-final">C$0.00</strong> 
+                    </div> 
+                    <h4 class="metodo-titulo">Método de Pago</h4> 
+                    <form class="payment-form" id="form-pago"> 
+                        <label class="payment-option"> 
+                            <input type="radio" name="payment_method" value="tarjeta" checked> 💳 Tarjeta de Crédito/Débito 
+                        </label> 
+                        <label class="payment-option"> 
+                            <input type="radio" name="payment_method" value="transferencia"> 🏦 Transferencia Bancaria 
+                        </label> 
+                        <label class="payment-option"> 
+                            <input type="radio" name="payment_method" value="cash"> 💵 Pago en Efectivo (Contra entrega) 
+                        </label> 
+                        <button type="submit" class="btn-1 btn-checkout" id="btn-confirmar"> 
+                            Confirmar y Pagar 
+                        </button> 
+                    </form> 
+                </section> 
+            </main> 
+        </div> 
+    </div> 
+
+    <script src="carrito.js"></script> 
+</body> 
+</html>

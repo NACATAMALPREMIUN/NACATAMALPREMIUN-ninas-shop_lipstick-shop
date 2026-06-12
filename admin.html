@@ -1,0 +1,216 @@
+<!DOCTYPE html> 
+<html lang="es"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Panel de Control | Administrador Lipst_ick Shop</title> 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="admin.css"> 
+</head> 
+<body class="dark-dashboard"> 
+
+    <div class="sidebar"> 
+        <div class="sidebar-brand">
+            <h2>Lipst_ick Shop</h2>
+            <span>Admin Control</span>
+        </div>
+        <div class="sidebar-menu">
+            <button class="menu-btn active" onclick="cambiarSeccion('stock', this)">📦 Stock de Productos</button> 
+            <button class="menu-btn" onclick="cambiarSeccion('ventas', this)">📊 Porcentaje de Ventas</button> 
+            <button class="menu-btn" onclick="cambiarSeccion('pagos', this)">🧾 Historial de Pagos</button> 
+            <button class="menu-btn" onclick="cambiarSeccion('usuarios', this)">👥 Usuarios Registrados</button> 
+            <button class="menu-btn" onclick="cambiarSeccion('personal', this)">👔 Módulo de Personal</button> 
+        </div>
+        <button class="btn-logout" onclick="cerrarSesion()">Cerrar Sesión</button> 
+    </div> 
+
+    <div class="content"> 
+        
+        <div class="metrics-container">
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <h4>Ingresos de Hoy</h4>
+                    <p id="kpi-dia">C$0.00</p>
+                </div>
+                <div class="kpi-icon icon-gain">💰</div>
+            </div>
+            <div class="kpi-card" id="kpi-alerta-box">
+                <div class="kpi-info">
+                    <h4>Stock Crítico (Min-Prod)</h4>
+                    <p id="kpi-alertas">0 Alertas</p>
+                </div>
+                <div class="kpi-icon icon-alert">⚠️</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <h4>Total Clientes</h4>
+                    <p id="kpi-clientes">0</p>
+                </div>
+                <div class="kpi-icon icon-clients">👥</div>
+            </div>
+        </div>
+
+        <div id="mod-stock" class="modulo activo"> 
+            <div class="module-header">
+                <h3>Gestión de Stock e Inventario</h3> 
+            </div>
+            
+            <div class="stock-grid">
+                <div class="glass-panel">
+                    <h4>Añadir Producto Manual</h4>
+                    <form class="form-stock" id="form-nuevo-producto">
+                        <div class="input-group">
+                            <input type="text" id="prod-nombre" placeholder="Nombre del Producto" required>
+                        </div>
+                        <div class="input-group">
+                            <input type="number" id="prod-cantidad" placeholder="Cantidad Inicial" min="1" required>
+                        </div>
+                        <div class="input-group">
+                            <input type="number" id="prod-precio" placeholder="Precio de Venta (C$)" step="0.01" min="0" required>
+                        </div>
+                        <button type="submit" class="btn-submit">➕ Agregar Producto</button>
+                    </form>
+                </div>
+
+                <div class="glass-panel data-panel">
+                    <div class="table-responsive">
+                        <table id="tabla-stock"> 
+                            <thead> 
+                                <tr>
+                                    <th>ID Inventario</th>
+                                    <th>Producto</th>
+                                    <th>Stock Actual (Anclado)</th>
+                                    <th>Stock Mínimo</th>
+                                    <th>Precio</th>
+                                    <th>Estado Alerta</th>
+                                </tr> 
+                            </thead> 
+                            <tbody>
+                            </tbody> 
+                        </table> 
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        <div id="mod-ventas" class="modulo"> 
+            <div class="module-header-split">
+                <h3>Métricas y Porcentajes de Ventas</h3> 
+                <div class="acciones-exportacion">
+                    <button onclick="exportarExcel()" class="btn-export excel">📊 Exportar Excel</button>
+                    <button onclick="guardarGrafica()" class="btn-export graph">🖼️ Guardar Gráfica</button>
+                </div>
+            </div>
+            
+            <div class="filtro-temporal">
+                <label for="filtro-tiempo">Rendimiento Comercial:</label>
+                <select id="filtro-tiempo" onchange="cargarDatosGrafico()">
+                    <option value="dia">Porcentajes del Día</option>
+                    <option value="semana">Porcentajes de la Semana</option>
+                    <option value="mes" selected>Porcentajes del Mes</option>
+                    <option value="anio">Porcentajes del Año</option>
+                </select>
+            </div>
+
+            <div class="dashboard-ventas-grid">
+                <div class="metricas-izq">
+                    <div class="glass-panel text-center"> 
+                        <h4>Cumplimiento de Meta</h4>
+                        <div class="progress-circle-placeholder">
+                            <span id="txt-porcentaje">0%</span>
+                        </div>
+                    </div> 
+                    <div class="glass-panel text-center">
+                        <h4>Ingresos Acumulados</h4>
+                        <p class="highlight-text">C$<span id="txt-ingresos">0.00</span></p>
+                    </div>
+                </div>
+                <div class="glass-panel grafico-main">
+                    <h4>Historial Estadístico de Rendimiento</h4>
+                    <div class="grafico-container">
+                        <canvas id="canvasGraficoVentas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        <div id="mod-pagos" class="modulo">
+            <div class="module-header">
+                <h3>Registro de Facturación e Historial de Pagos</h3>
+            </div>
+            <div class="glass-panel full-width">
+                <div class="table-responsive">
+                    <table id="tabla-pagos">
+                        <thead>
+                            <tr>
+                                <th>Cod. Factura</th>
+                                <th>Fecha Emisión</th>
+                                <th>Cliente</th>
+                                <th>ID Pedido</th>
+                                <th>Total (C$)</th>
+                                <th>Notificación Lara</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="mod-usuarios" class="modulo"> 
+            <div class="module-header">
+                <h3>Lista de Usuarios Registrados</h3> 
+            </div>
+            <div class="glass-panel full-width">
+                <div class="table-responsive">
+                    <table id="tabla-usuarios"> 
+                        <thead> 
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre de Usuario (Nick)</th>
+                                <th>Correo Electrónico</th>
+                                <th>Rol de Acceso</th>
+                            </tr> 
+                        </thead> 
+                        <tbody>
+                        </tbody> 
+                    </table> 
+                </div>
+            </div>
+        </div> 
+
+        <div id="mod-personal" class="modulo">
+            <div class="module-header">
+                <h3>Módulo de Control de Empleados</h3>
+            </div>
+            <div class="glass-panel full-width">
+                <div class="table-responsive">
+                    <table id="tabla-personal">
+                        <thead>
+                            <tr>
+                                <th>ID Empleado</th>
+                                <th>Nombre Cargo</th>
+                                <th>Área / Departamento</th>
+                                <th>Identificador de Persona</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge badge-id">EMP-0001</span></td>
+                                <td>Administrador General</td>
+                                <td>Área Digital y Ventas</td>
+                                <td>PER-01</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div> 
+
+    <script src="admin.js"></script>
+</body>
+</html>

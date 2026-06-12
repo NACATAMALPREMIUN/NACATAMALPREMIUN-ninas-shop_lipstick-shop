@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña | Lipst_ick Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
+    <style>
+        /* Oculta el segundo paso por defecto */
+        #paso-2 { display: none; }
+    </style>
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="back-link">
+            <a href="login.html">← Volver al Login</a>
+        </div>
+        <div class="login-box">
+            <img class="logo-login" src="imagines/logo1-removebg-preview.png" alt="Logo de Lipst_ick Shop">
+            
+            <div id="paso-1">
+                <h2>¿Olvidaste tu contraseña?</h2>
+                <p style="font-size: 14px; color: #666; margin: 10px 0 20px 0; text-align: center;">
+                    Ingresa tu correo y te enviaremos un código de seguridad para restablecer tu cuenta.
+                </p>
+                <form id="form-solicitar">
+                    <div class="input-group">
+                        <label for="recovery-email">Correo Electrónico</label>
+                        <input type="email" id="recovery-email" required placeholder="tu.correo@ejemplo.com">
+                    </div>
+                    <button type="submit" class="btn-1 btn-login">Enviar Código</button>
+                </form>
+            </div>
+
+            <div id="paso-2">
+                <h2>Restablecer Contraseña</h2>
+                <p style="font-size: 14px; color: #666; margin: 10px 0 20px 0; text-align: center;">
+                    Ingresa el código de 6 dígitos enviado a tu Gmail y escribe tu nueva contraseña.
+                </p>
+                <form id="form-restablecer">
+                    <div class="input-group">
+                        <label for="recovery-token">Código de Verificación</label>
+                        <input type="text" id="recovery-token" required placeholder="123456" maxlength="6" style="text-align: center; font-size: 18px; letter-spacing: 4px;">
+                    </div>
+                    <div class="input-group">
+                        <label for="new-password">Nueva Contraseña</label>
+                        <input type="password" id="new-password" required placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <button type="submit" class="btn-1 btn-login" style="background-color: #2bc48a !important;">Actualizar Contraseña</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const URL_API = "http://localhost:5000/api";
+        let correoUsuarioGlobal = ""; // Guarda temporalmente el correo para el segundo paso
+
+        const paso1 = document.getElementById('paso-1');
+        const paso2 = document.getElementById('paso-2');
+        const formSolicitar = document.getElementById('form-solicitar');
+        const formRestablecer = document.getElementById('form-restablecer');
+
+        // 1. Enviar correo para pedir el token
+        formSolicitar.addEventListener('submit', (e) => {
+            e.preventDefault();
+            correoUsuarioGlobal = document.getElementById('recovery-email').value;
+
+            fetch(`${URL_API}/olvide-password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ correo: correoUsuarioGlobal })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.mensaje || data.error);
+                if (data.mensaje) {
+                    // Transición suave al paso 2
+                    paso1.style.display = 'none';
+                    paso2.style.display = 'block';
+                }
+            })
+            .catch(err => alert("Error de conexión al solicitar el código."));
+        });
+
+        // 2. Enviar el token junto con la nueva contraseña
+        formRestablecer.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const datosCambio = {
+                correo: correoUsuarioGlobal,
+                token: document.getElementById('recovery-token').value,
+                nuevaPassword: document.getElementById('new-password').value
+            };
+
+            fetch(`${URL_API}/restablecer-password`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datosCambio)
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.mensaje || data.error);
+                if (data.mensaje) {
+                    // Si todo sale bien, lo devuelve a la pantalla de acceso
+                    window.location.href = "login.html";
+                }
+            })
+            .catch(err => alert("Error de conexión al cambiar la contraseña."));
+        });
+    </script>
+</body>
+</html>
